@@ -1,5 +1,12 @@
 plugins {
+    // https://docs.gradle.org/current/userguide/application_plugin.html
     id 'java'
+    id 'application'
+}
+
+application {
+    // https://docs.gradle.org/current/userguide/application_plugin.html
+    mainClass = 'weathersim.SimulationUI'
 }
 
 group = 'weathersim'
@@ -10,6 +17,10 @@ repositories {
 }
 
 dependencies {
+    // https://central.sonatype.com/artifact/org.processing/core
+    // https://github.com/processing/processing4/blob/main/BUILD.md
+    implementation("org.processing:core:4.5.3")
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
