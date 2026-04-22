@@ -2,6 +2,10 @@ package weathersim;
 
 import processing.core.PApplet;
 import java.util.List;
+import weathersim.commands.ICommand;
+import weathersim.commands.TempViewCommand;
+import weathersim.views.IViewStrategy;
+import weathersim.views.TempViewStrategy;
 
 public class SimulationUI extends PApplet {
 
@@ -20,6 +24,7 @@ public class SimulationUI extends PApplet {
     private final int PANEL_HEIGHT = 75;
     private final int ICON_WIDTH = 125;
     private final int ICON_HEIGHT = 40;
+    private IViewStrategy viewStrategy;
 
     public static void main(String[] args) {
         // source: https://www.mindevice.net/posts/processing4-java
@@ -36,11 +41,11 @@ public class SimulationUI extends PApplet {
         // source: https://processing.org/reference
         textSize(16);
         textAlign(CENTER, CENTER);
+        background(255);
     }
 
     public void draw() {
         // Processing - Loops constantly after setup()
-        background(255);
         fill(0);
 
         // Bottom Panel
@@ -72,8 +77,15 @@ public class SimulationUI extends PApplet {
             activeKey = 'r';
         } else if (key == 't') {
             activeKey = 't';
+            ICommand command = new TempViewCommand(this);
+            command.execute();
         } else if (key == 'm') {
             activeKey = 'm';
         }
     }
+
+    public void setViewStrategy(IViewStrategy viewStrategy) {
+        this.viewStrategy = viewStrategy;
+    }
+
 }
