@@ -3,6 +3,8 @@ package weathersim;
 import processing.core.PApplet;
 import java.util.List;
 import weathersim.commands.ICommand;
+import weathersim.commands.MoistureViewCommand;
+import weathersim.commands.ResultViewCommand;
 import weathersim.commands.TempViewCommand;
 import weathersim.views.IViewStrategy;
 import weathersim.views.ResultViewStrategy;
@@ -80,12 +82,16 @@ public class SimulationUI extends PApplet {
         // Processing - Runs when key pressed
         if(key == 'r') {
             activeKey = 'r';
+            ICommand command = new ResultViewCommand(this);
+            command.execute();
         } else if (key == 't') {
             activeKey = 't';
             ICommand command = new TempViewCommand(this);
             command.execute();
         } else if (key == 'm') {
             activeKey = 'm';
+            ICommand command = new MoistureViewCommand(this);
+            command.execute();
         }
     }
 
