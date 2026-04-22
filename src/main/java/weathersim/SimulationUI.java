@@ -5,6 +5,7 @@ import java.util.List;
 import weathersim.commands.ICommand;
 import weathersim.commands.TempViewCommand;
 import weathersim.views.IViewStrategy;
+import weathersim.views.ResultViewStrategy;
 import weathersim.views.TempViewStrategy;
 
 public class SimulationUI extends PApplet {
@@ -41,13 +42,17 @@ public class SimulationUI extends PApplet {
         // source: https://processing.org/reference
         textSize(16);
         textAlign(CENTER, CENTER);
-        background(255);
+        viewStrategy = new ResultViewStrategy();
+
     }
 
     public void draw() {
         // Processing - Loops constantly after setup()
-        fill(0);
+        background(255);
 
+        viewStrategy.render(g, null);
+
+        fill(0);
         // Bottom Panel
         strokeWeight(0);
         fill(PANEL_COLOR);
