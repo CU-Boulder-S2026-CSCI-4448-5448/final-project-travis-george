@@ -8,12 +8,13 @@ import weathersim.commands.ResultViewCommand;
 import weathersim.commands.TempViewCommand;
 import weathersim.views.IViewStrategy;
 import weathersim.views.ResultViewStrategy;
-import weathersim.views.TempViewStrategy;
 
 public class SimulationUI extends PApplet {
 
     private static final int CANVAS_WIDTH = 800;
     private static final int CANVAS_HEIGHT = 600;
+
+    private Simulation sim;
 
     // Control Key
     private char activeKey = 'r';
@@ -21,9 +22,10 @@ public class SimulationUI extends PApplet {
     private List<String> labels = List.of("Result", "Temp", "Moisture");
 
     // UI Constants
-    private final int PANEL_COLOR = color(200,200,255);
-    private final int ICON_ACTIVE_COLOR = color(0,255,150);
-    private final int ICON_INACTIVE_COLOR = color(255,255,255);
+    private final int CELL_SIZE = 10;
+    private final int PANEL_COLOR = color(200, 200, 255);
+    private final int ICON_ACTIVE_COLOR = color(0, 255, 150);
+    private final int ICON_INACTIVE_COLOR = color(255, 255, 255);
     private final int PANEL_HEIGHT = 75;
     private final int ICON_WIDTH = 125;
     private final int ICON_HEIGHT = 40;
@@ -46,13 +48,19 @@ public class SimulationUI extends PApplet {
         textAlign(CENTER, CENTER);
         viewStrategy = new ResultViewStrategy();
 
+        int rows = (height - PANEL_HEIGHT) / CELL_SIZE;
+        int cols = width / CELL_SIZE;
+        sim = new Simulation(rows, cols);
+
     }
 
     public void draw() {
         // Processing - Loops constantly after setup()
         background(255);
 
-        viewStrategy.render(g, null);
+        // Update simulation and render results
+        sim.update();
+        viewStrategy.render(g, sim);
 
         fill(0);
         // Bottom Panel
@@ -70,17 +78,17 @@ public class SimulationUI extends PApplet {
             } else {
                 fill(ICON_INACTIVE_COLOR);
             }
-            int x = (width/4)*(i+1);
-            int y = height - (PANEL_HEIGHT/2);
+            int x = (width / 4) * (i + 1);
+            int y = height - (PANEL_HEIGHT / 2);
             rect(x, y, ICON_WIDTH, ICON_HEIGHT);
             fill(0);
             text(labels.get(i) + " [" + keys.get(i) + "]", x, y);
         }
     }
 
-    public void keyPressed () {
+    public void keyPressed() {
         // Processing - Runs when key pressed
-        if(key == 'r') {
+        if (key == 'r') {
             activeKey = 'r';
             ICommand command = new ResultViewCommand(this);
             command.execute();
@@ -93,6 +101,11 @@ public class SimulationUI extends PApplet {
             ICommand command = new MoistureViewCommand(this);
             command.execute();
         }
+    }
+
+    public void mouseDragged() {
+        // Processing - Runs when mouse dragged
+        viewStrategy.onMouseDrag(g, sim, mouseX, mouseY);
     }
 
     public void setViewStrategy(IViewStrategy viewStrategy) {

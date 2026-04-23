@@ -6,10 +6,14 @@ public class Simulation {
     private final TempField tempField;
 
     public Simulation(int rows, int cols) {
-        this.tempField = null;
+        this.tempField = new TempField(rows, cols);
     }
 
     public void update() {
         tempField.tick();
+    }
+
+    public TempField getTempField() {
+        return this.tempField;
     }
 }
