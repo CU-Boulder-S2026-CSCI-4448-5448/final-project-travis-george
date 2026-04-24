@@ -1,9 +1,14 @@
 package weathersim.fields;
 
 public class MoistureField extends SimulationField {
+    // Diffusion
     private static final float TRANSFER_RATE = 0.015f;
     private static final float DIFFUSE_RATE = 0.003f;
-    private static final float INITIAL_MAX = 0.4f;
+    // Seed and target
+    private static final float TARGET_AVG = 0.2f;
+    private static final float INITIAL_RANGE = 0.08f;
+    // Evaporation
+    private static final float EVAP_RATE = 0.005f;
 
     private final TempField tempField;
 
@@ -11,10 +16,10 @@ public class MoistureField extends SimulationField {
         super(rows, cols);
         this.tempField = tempField;
 
-        // Setup temp grid with gradient
+        // Start with  moisture around target average
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                grid[r][c] = (float) Math.random() * INITIAL_MAX;
+                grid[r][c] = TARGET_AVG + ((float) Math.random() - 0.5f) * INITIAL_RANGE;
             }
         }
     }
@@ -66,9 +71,20 @@ public class MoistureField extends SimulationField {
             }
         }
 
+        // Copy newGrid to grid, track moisture
+        float moistureTotal = 0;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 grid[r][c] = newGrid[r][c];
+                moistureTotal += newGrid[r][c];
+            }
+        }
+
+        // Add moisture from bottom if below target (evaporation)
+        float currentAvg = moistureTotal / (rows * cols);
+        if (currentAvg < TARGET_AVG) {
+            for (int c = 0; c < cols; c++) {
+                grid[rows - 1][c] = Math.min(1f, grid[rows - 1][c] + EVAP_RATE);
             }
         }
     }
