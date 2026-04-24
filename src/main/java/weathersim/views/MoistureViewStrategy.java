@@ -1,27 +1,39 @@
 package weathersim.views;
 
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import weathersim.Simulation;
 
 public class MoistureViewStrategy implements IViewStrategy {
+    // Dry color (sandy yellow)
+    private static final int DRY_R = 255;
+    private static final int DRY_G = 240;
+    private static final int DRY_B = 150;
+    // Wet color (blue)
+    private static final int WET_R = 20;
+    private static final int WET_G = 20;
+    private static final int WET_B = 120;
+
     @Override
     public void render(PGraphics g, Simulation sim) {
         // Draw grid
         // source: https://processing.org/examples/gameoflife.html
         int rows = sim.getMoistureField().getNumRows();
         int cols = sim.getMoistureField().getNumCols();
-        int cellSize = g.width / cols;
+        float cellWidth = sim.getSkyboxWidth() / cols;
+        float cellHeight = sim.getSkyboxHeight() / rows;
 
         g.stroke(200);
         g.strokeWeight(0.1f);
-        int dry = g.color(255, 240, 150); // yellow
-        int wet = g.color(20, 20, 120); // blue
+        g.rectMode(PConstants.CORNER);
+        int dry = g.color(DRY_R, DRY_G, DRY_B);
+        int wet = g.color(WET_R, WET_G, WET_B);
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 float value = sim.getMoistureField().getCell(row, col);
                 int cellColor = g.lerpColor(dry, wet, value);
                 g.fill(cellColor);
-                g.rect(col * cellSize, row * cellSize, cellSize, cellSize);
+                g.rect(col * cellWidth, row * cellHeight, cellWidth, cellHeight);
             }
         }
     }

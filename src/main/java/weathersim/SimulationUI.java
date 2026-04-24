@@ -7,7 +7,7 @@ import weathersim.commands.CommandFactory;
 import weathersim.views.IViewStrategy;
 
 public class SimulationUI extends PApplet {
-
+    // source: https://processing.org/reference
     private static final int CANVAS_WIDTH = 800;
     private static final int CANVAS_HEIGHT = 600;
 
@@ -17,7 +17,6 @@ public class SimulationUI extends PApplet {
     private final int CELL_SIZE = 10;
     private final int PANEL_HEIGHT = 90;
     private final int PANEL_COLOR = color(200, 200, 255);
-    private final int BACKGROUND_COLOR = color(255);
     private final int BLACK = color(0);
     private final int WHITE = color(255);
 
@@ -26,7 +25,7 @@ public class SimulationUI extends PApplet {
     private final List<Character> KEYS = List.of('r', 't', 'm');
     private final List<String> LABELS = List.of("Result", "Temp", "Moisture");
     private final int TEXT_SIZE = 16;
-    private final int ICON_TOP_MARGIN = 30;      // main icon row offset from panel top
+    private final int ICON_TOP_MARGIN = 30;
     private final int ICON_WIDTH = 125;
     private final int ICON_HEIGHT = 30;
     private final int ICON_ACTIVE_COLOR = color(0, 255, 150);
@@ -56,27 +55,34 @@ public class SimulationUI extends PApplet {
 
     public void setup() {
         // Processing - Runs once at start
-        // source: https://processing.org/reference
         textSize(TEXT_SIZE);
         textAlign(CENTER, CENTER);
 
         int rows = (height - PANEL_HEIGHT) / CELL_SIZE;
         int cols = width / CELL_SIZE;
-        sim = new Simulation(rows, cols);
+        float skyboxWidth = width;
+        float skyboxHeight = height - PANEL_HEIGHT;
+        sim = new Simulation(rows, cols, skyboxWidth, skyboxHeight);
 
         commandFactory.newResultViewCommand(this).execute();
     }
 
     public void draw() {
         // Processing - Loops constantly after setup()
-        background(BACKGROUND_COLOR);
+        // clear screen
+        background(WHITE);
 
-        // Update simulation and render results
+        // Update Sim
         sim.update();
+
+        // Render current view
         viewStrategy.render(g, sim);
 
-        fill(BLACK);
-        // Bottom Panel
+        // Render info panel
+        drawInfoPanel();
+    }
+
+    public void drawInfoPanel() {
         strokeWeight(0);
         fill(PANEL_COLOR);
         rectMode(CORNER);
@@ -150,5 +156,4 @@ public class SimulationUI extends PApplet {
     public void setViewStrategy(IViewStrategy viewStrategy) {
         this.viewStrategy = viewStrategy;
     }
-
 }
