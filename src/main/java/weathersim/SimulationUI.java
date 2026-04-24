@@ -18,6 +18,9 @@ public class SimulationUI extends PApplet {
     private List<Character> keys = List.of('r', 't', 'm');
     private List<String> labels = List.of("Result", "Temp", "Moisture");
 
+    // Paint Mode
+    private boolean coldPaint = false;
+
     // UI Constants
     private final int CELL_SIZE = 10;
     private final int PANEL_COLOR = color(200, 200, 255);
@@ -95,12 +98,16 @@ public class SimulationUI extends PApplet {
         } else if (key == 'm') {
             activeKey = 'm';
             commandFactory.newMoistureViewCommand(this).execute();
+        } else if (key == 'c') {
+            coldPaint = true;
+        } else if (key == 'h') {
+            coldPaint = false;
         }
     }
 
     public void mouseDragged() {
         // Processing - Runs when mouse dragged
-        viewStrategy.onMouseDrag(g, sim, mouseX, mouseY);
+        viewStrategy.onMouseDrag(g, sim, mouseX, mouseY, coldPaint);
     }
 
     public void setViewStrategy(IViewStrategy viewStrategy) {
