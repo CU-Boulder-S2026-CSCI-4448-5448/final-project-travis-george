@@ -28,10 +28,14 @@ public class TempViewStrategy implements IViewStrategy {
     }
 
     @Override
-    public void onMouseDrag(PGraphics g, Simulation sim, int x, int y) {
+    public void onMouseDrag(PGraphics g, Simulation sim, int x, int y, boolean coldPaint) {
         int cellSize = g.width / sim.getTempField().getNumCols();
         int col = x / cellSize;
         int row = y / cellSize;
-        sim.getTempField().paint(row, col);
+        if (coldPaint) {
+            sim.getTempField().paintCold(row, col);
+        } else {
+            sim.getTempField().paintHot(row, col);
+        }
     }
 }
