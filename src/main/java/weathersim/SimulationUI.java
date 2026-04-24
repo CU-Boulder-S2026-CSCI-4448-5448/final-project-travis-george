@@ -2,12 +2,9 @@ package weathersim;
 
 import processing.core.PApplet;
 import java.util.List;
-import weathersim.commands.ICommand;
-import weathersim.commands.MoistureViewCommand;
-import weathersim.commands.ResultViewCommand;
-import weathersim.commands.TempViewCommand;
+
+import weathersim.commands.CommandFactory;
 import weathersim.views.IViewStrategy;
-import weathersim.views.ResultViewStrategy;
 
 public class SimulationUI extends PApplet {
 
@@ -30,6 +27,7 @@ public class SimulationUI extends PApplet {
     private final int ICON_WIDTH = 125;
     private final int ICON_HEIGHT = 40;
     private IViewStrategy viewStrategy;
+    private final CommandFactory commandFactory = new CommandFactory();
 
     public static void main(String[] args) {
         // source: https://www.mindevice.net/posts/processing4-java
@@ -46,12 +44,12 @@ public class SimulationUI extends PApplet {
         // source: https://processing.org/reference
         textSize(16);
         textAlign(CENTER, CENTER);
-        viewStrategy = new ResultViewStrategy();
 
         int rows = (height - PANEL_HEIGHT) / CELL_SIZE;
         int cols = width / CELL_SIZE;
         sim = new Simulation(rows, cols);
 
+        commandFactory.newResultViewCommand(this).execute();
     }
 
     public void draw() {
@@ -90,16 +88,13 @@ public class SimulationUI extends PApplet {
         // Processing - Runs when key pressed
         if (key == 'r') {
             activeKey = 'r';
-            ICommand command = new ResultViewCommand(this);
-            command.execute();
+            commandFactory.newResultViewCommand(this).execute();
         } else if (key == 't') {
             activeKey = 't';
-            ICommand command = new TempViewCommand(this);
-            command.execute();
+            commandFactory.newTempViewCommand(this).execute();
         } else if (key == 'm') {
             activeKey = 'm';
-            ICommand command = new MoistureViewCommand(this);
-            command.execute();
+            commandFactory.newMoistureViewCommand(this).execute();
         }
     }
 
