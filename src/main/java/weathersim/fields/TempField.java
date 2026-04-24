@@ -1,26 +1,25 @@
 package weathersim.fields;
 
 public class TempField extends SimulationField {
-    private static final float TOP_TEMP = 0f;
-    private static final float BOTTOM_TEMP = 0.8f;
+    // Brush
     private static final float HOT_PAINT_VALUE = 0.7f;
     private static final float COLD_PAINT_VALUE = 0.0f;
     private static final int BRUSH_SIZE = 2;
-    private static final float DIFFUSION_RATE = 0.2f;
-
-    private final float diffusionRate;
+    // Diffusion
+    private static final float DIFFUSION_RATE = 0.15f;
+    private static final float HORIZONTAL_BIAS = 10.0f;
+    private static final float GRADIENT_FALLOFF = 0.98f;
 
     public TempField(int rows, int cols) {
         super(rows, cols);
-        this.diffusionRate = DIFFUSION_RATE;
 
         // Setup temp field with gradient
-        for (int r = 0; r < rows; r++) {
-            float percentage = ((float) r / rows);
-            float value = lerp(TOP_TEMP, BOTTOM_TEMP, percentage);
+        float temp = HOT_PAINT_VALUE;
+        for (int r = rows - 1; r >= 0; r--) {
             for (int c = 0; c < cols; c++) {
-                grid[r][c] = value;
+                grid[r][c] = temp;
             }
+            temp *= GRADIENT_FALLOFF;
         }
     }
 
@@ -30,14 +29,9 @@ public class TempField extends SimulationField {
         float[][] newGrid = new float[rows][cols];
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                // Top row always cold source
-                if (r == 0) {
-                    newGrid[r][c] = TOP_TEMP;
-                    continue;
-                }
                 // Bottom row always hot source
                 if (r == rows - 1) {
-                    newGrid[r][c] = BOTTOM_TEMP;
+                    newGrid[r][c] = HOT_PAINT_VALUE;
                     continue;
                 }
 
@@ -63,8 +57,9 @@ public class TempField extends SimulationField {
                     right = grid[r][c + 1];
                 }
 
-                float avg = (float) ((up + down + left + right) / 4);
-                newGrid[r][c] = current + diffusionRate * (avg - current);
+                // Diffuses more to the sides than up and down
+                float avg = (HORIZONTAL_BIAS * (left + right) + (up + down)) / (2 * HORIZONTAL_BIAS + 2);
+                newGrid[r][c] = current + DIFFUSION_RATE * (avg - current);
             }
         }
 
@@ -93,11 +88,5 @@ public class TempField extends SimulationField {
                 }
             }
         }
-    }
-
-    private float lerp(float start, float end, float amount) {
-        // Matching the function of Processing's lerp()
-        // source: https://c.algorithmexamples.com/web/misc/lerp.html
-        return start + amount * (end - start);
     }
 }
