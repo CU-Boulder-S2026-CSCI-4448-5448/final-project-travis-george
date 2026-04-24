@@ -50,16 +50,16 @@ public class TempField extends SimulationField {
                 float right = current;
 
                 // updates neighbors if not on the edge of grid
-                if (r > 0) {
+                if (inBounds(r-1,c)) {
                     up = grid[r - 1][c];
                 }
-                if (r < rows - 1) {
+                if (inBounds(r+1,c)) {
                     down = grid[r + 1][c];
                 }
-                if (c > 0) {
+                if (inBounds(r,c-1)) {
                     left = grid[r][c - 1];
                 }
-                if (c < cols - 1) {
+                if (inBounds(r,c+1)) {
                     right = grid[r][c + 1];
                 }
 
