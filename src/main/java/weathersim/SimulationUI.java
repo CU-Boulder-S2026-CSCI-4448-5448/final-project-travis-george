@@ -13,22 +13,34 @@ public class SimulationUI extends PApplet {
 
     private Simulation sim;
 
-    // Control Key
-    private char activeKey = 'r';
-    private List<Character> keys = List.of('r', 't', 'm');
-    private List<String> labels = List.of("Result", "Temp", "Moisture");
-
-    // Paint Mode
-    private boolean coldPaint = false;
-
-    // UI Constants
+    // Layout
     private final int CELL_SIZE = 10;
+    private final int PANEL_HEIGHT = 90;
     private final int PANEL_COLOR = color(200, 200, 255);
+    private final int BACKGROUND_COLOR = color(255);
+    private final int BLACK = color(0);
+    private final int WHITE = color(255);
+
+    // Main Icons
+    private char activeKey = 'r';
+    private final List<Character> KEYS = List.of('r', 't', 'm');
+    private final List<String> LABELS = List.of("Result", "Temp", "Moisture");
+    private final int TEXT_SIZE = 16;
+    private final int ICON_TOP_MARGIN = 30;      // main icon row offset from panel top
+    private final int ICON_WIDTH = 125;
+    private final int ICON_HEIGHT = 30;
     private final int ICON_ACTIVE_COLOR = color(0, 255, 150);
     private final int ICON_INACTIVE_COLOR = color(255, 255, 255);
-    private final int PANEL_HEIGHT = 75;
-    private final int ICON_WIDTH = 125;
-    private final int ICON_HEIGHT = 40;
+
+    // Paint Icons
+    private boolean coldPaint = false;
+    private final int PAINT_ICON_WIDTH = 60;
+    private final int PAINT_ICON_HEIGHT = 20;
+    private final int PAINT_ICON_STROKE_ACTIVE = 3;
+    private final int PAINT_TEXT_SIZE = 12;
+    private final int COLD_COLOR = color(0, 0, 255);
+    private final int HOT_COLOR = color(255, 0, 0);
+
     private IViewStrategy viewStrategy;
     private final CommandFactory commandFactory = new CommandFactory();
 
@@ -45,7 +57,7 @@ public class SimulationUI extends PApplet {
     public void setup() {
         // Processing - Runs once at start
         // source: https://processing.org/reference
-        textSize(16);
+        textSize(TEXT_SIZE);
         textAlign(CENTER, CENTER);
 
         int rows = (height - PANEL_HEIGHT) / CELL_SIZE;
@@ -57,13 +69,13 @@ public class SimulationUI extends PApplet {
 
     public void draw() {
         // Processing - Loops constantly after setup()
-        background(255);
+        background(BACKGROUND_COLOR);
 
         // Update simulation and render results
         sim.update();
         viewStrategy.render(g, sim);
 
-        fill(0);
+        fill(BLACK);
         // Bottom Panel
         strokeWeight(0);
         fill(PANEL_COLOR);
@@ -73,18 +85,43 @@ public class SimulationUI extends PApplet {
         // Control Icons
         fill(ICON_INACTIVE_COLOR);
         rectMode(CENTER);
-        for (int i = 0; i < keys.size(); i++) {
-            if (keys.get(i) == activeKey) {
+        int iconY = height - PANEL_HEIGHT + ICON_TOP_MARGIN;
+        for (int i = 0; i < KEYS.size(); i++) {
+            if (KEYS.get(i) == activeKey) {
                 fill(ICON_ACTIVE_COLOR);
             } else {
                 fill(ICON_INACTIVE_COLOR);
             }
-            int x = (width / 4) * (i + 1);
-            int y = height - (PANEL_HEIGHT / 2);
-            rect(x, y, ICON_WIDTH, ICON_HEIGHT);
-            fill(0);
-            text(labels.get(i) + " [" + keys.get(i) + "]", x, y);
+            int x = (width / (KEYS.size() + 1)) * (i + 1);
+            rect(x, iconY, ICON_WIDTH, ICON_HEIGHT);
+            fill(BLACK);
+            text(LABELS.get(i) + " [" + KEYS.get(i) + "]", x, iconY);
         }
+
+        // Paint Icons (under Temp icon)
+        int paintY = iconY + ICON_HEIGHT;
+        int tempX = (width / (KEYS.size() + 1)) * 2;
+        int coldX = tempX - PAINT_ICON_WIDTH / 2;
+        int hotX = tempX + PAINT_ICON_WIDTH / 2;
+
+        stroke(WHITE);
+        textSize(PAINT_TEXT_SIZE);
+
+        // Cold brush
+        fill(COLD_COLOR);
+        strokeWeight(coldPaint ? PAINT_ICON_STROKE_ACTIVE : 0);
+        rect(coldX, paintY, PAINT_ICON_WIDTH, PAINT_ICON_HEIGHT);
+        fill(WHITE);
+        text("Cold [c]", coldX, paintY);
+
+        // Hot brush
+        fill(HOT_COLOR);
+        strokeWeight(!coldPaint ? PAINT_ICON_STROKE_ACTIVE : 0);
+        rect(hotX, paintY, PAINT_ICON_WIDTH, PAINT_ICON_HEIGHT);
+        fill(WHITE);
+        text("Hot [h]", hotX, paintY);
+
+        textSize(TEXT_SIZE);
     }
 
     public void keyPressed() {
