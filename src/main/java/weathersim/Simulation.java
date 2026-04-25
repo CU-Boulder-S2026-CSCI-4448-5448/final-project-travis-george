@@ -14,9 +14,9 @@ public class Simulation {
     public Simulation(int rows, int cols, float skyboxWidth, float skyboxHeight) {
         this.tempField = new TempField(rows, cols);
         this.moistureField = new MoistureField(rows, cols, tempField);
+        this.rainParticleSystem = new RainParticleSystem(skyboxWidth, skyboxHeight, moistureField);
         this.skyboxWidth = skyboxWidth;
         this.skyboxHeight = skyboxHeight;
-        this.rainParticleSystem = new RainParticleSystem();
     }
 
     public void update() {

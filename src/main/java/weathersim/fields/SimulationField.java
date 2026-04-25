@@ -41,4 +41,10 @@ public abstract class SimulationField {
             this.grid[row][col] = value;
         }
     }
+
+    public void reduceCell(int row, int col, float value) {
+        if (inBounds(row, col)) {
+            this.grid[row][col] = Math.max(0.0f, this.grid[row][col] - value);
+        }
+    }
 }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class ResultViewStrategy implements IViewStrategy {
     public static final float CLOUD_THRESHOLD = 0.325f;
-    public static final float RAIN_THRESHOLD = 0.39f;
 
     // Sky color
     private static final int SKY_R = 145;
@@ -73,20 +72,6 @@ public class ResultViewStrategy implements IViewStrategy {
     }
 
     public void drawRain(PGraphics g, Simulation sim) {
-        // spawn rain from cells where they are raining
-        int rows = sim.getMoistureField().getNumRows();
-        int cols = sim.getMoistureField().getNumCols();
-        float cellWidth = (float) g.width / cols;
-        float cellHeight = (float) g.height / rows;
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                float moisture = sim.getMoistureField().getCell(row, col);
-                if (moisture >= RAIN_THRESHOLD) {
-                    sim.getRainParticleSystem().spawnAt(row, col, cellWidth, cellHeight, sim);
-                }
-            }
-        }
-
         // draw rain from rain list
         ArrayList<RainParticle> particles = sim.getRainParticleSystem().getParticles();
         for (int i = particles.size() - 1; i >= 0; i--) {
@@ -96,7 +81,7 @@ public class ResultViewStrategy implements IViewStrategy {
             g.ellipse(p.getPosition().x, p.getPosition().y, 3, 8);
         }
     }
-    
+
     private static float invLerp(float from, float to, float value) {
         // Source: https://www.ronja-tutorials.com/post/047-invlerp_remap/
         return (value - from) / (to - from);
