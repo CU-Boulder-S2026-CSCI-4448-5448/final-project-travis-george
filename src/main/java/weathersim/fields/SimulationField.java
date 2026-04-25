@@ -35,4 +35,10 @@ public abstract class SimulationField {
         }
         return 0.0f;
     }
+
+    public void setCell(int row, int col, float value) { // removes cloud moisture during rain
+        if (inBounds(row, col)) {
+            this.grid[row][col] = value;
+        }
+    }
 }
