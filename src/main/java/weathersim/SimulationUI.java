@@ -8,8 +8,8 @@ import weathersim.views.IViewStrategy;
 
 public class SimulationUI extends PApplet {
     // source: https://processing.org/reference
-    private static final int CANVAS_WIDTH = 800;
-    private static final int CANVAS_HEIGHT = 600;
+    private static final int CANVAS_WIDTH = 1100;
+    private static final int CANVAS_HEIGHT =700;
 
     private Simulation sim;
 

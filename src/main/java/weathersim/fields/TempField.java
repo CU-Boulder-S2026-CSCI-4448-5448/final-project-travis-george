@@ -6,7 +6,7 @@ public class TempField extends SimulationField {
     private static final float COLD_PAINT_VALUE = 0.0f;
     private static final int BRUSH_SIZE = 2;
     // Diffusion
-    private static final float DIFFUSION_RATE = 0.15f;
+    private static final float DIFFUSION_RATE = 0.25f;
     private static final float HORIZONTAL_BIAS = 10.0f;
     private static final float GRADIENT_FALLOFF = 0.98f;
 

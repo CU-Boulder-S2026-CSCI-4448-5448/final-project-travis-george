@@ -5,14 +5,14 @@ import processing.core.PGraphics;
 import weathersim.Simulation;
 
 public class MoistureViewStrategy implements IViewStrategy {
-    // Dry color (sandy yellow)
+    // Dry color (yellow)
     private static final int DRY_R = 255;
     private static final int DRY_G = 240;
-    private static final int DRY_B = 150;
+    private static final int DRY_B = 200;
     // Wet color (blue)
-    private static final int WET_R = 20;
-    private static final int WET_G = 20;
-    private static final int WET_B = 120;
+    private static final int WET_R = 10;
+    private static final int WET_G = 120;
+    private static final int WET_B = 255;
 
     @Override
     public void render(PGraphics g, Simulation sim) {
