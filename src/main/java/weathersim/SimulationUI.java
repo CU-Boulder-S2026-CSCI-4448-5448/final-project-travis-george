@@ -1,9 +1,12 @@
 package weathersim;
 
 import processing.core.PApplet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import weathersim.commands.CommandFactory;
+import weathersim.commands.ICommand;
 import weathersim.views.IViewStrategy;
 
 public class SimulationUI extends PApplet {
@@ -42,6 +45,7 @@ public class SimulationUI extends PApplet {
 
     private IViewStrategy viewStrategy;
     private final CommandFactory commandFactory = new CommandFactory();
+    private final Map<Character, ICommand> viewCommands = new HashMap<>();
 
     public static void main(String[] args) {
         // source: https://www.mindevice.net/posts/processing4-java
@@ -64,7 +68,10 @@ public class SimulationUI extends PApplet {
         float skyboxHeight = height - PANEL_HEIGHT;
         sim = new Simulation(rows, cols, skyboxWidth, skyboxHeight);
 
-        commandFactory.newResultViewCommand(this).execute();
+        viewCommands.put('r', commandFactory.newResultViewCommand(this));
+        viewCommands.put('t', commandFactory.newTempViewCommand(this));
+        viewCommands.put('m', commandFactory.newMoistureViewCommand(this));
+        viewCommands.get(activeKey).execute();
     }
 
     public void draw() {
@@ -132,15 +139,9 @@ public class SimulationUI extends PApplet {
 
     public void keyPressed() {
         // Processing - Runs when key pressed
-        if (key == 'r') {
-            activeKey = 'r';
-            commandFactory.newResultViewCommand(this).execute();
-        } else if (key == 't') {
-            activeKey = 't';
-            commandFactory.newTempViewCommand(this).execute();
-        } else if (key == 'm') {
-            activeKey = 'm';
-            commandFactory.newMoistureViewCommand(this).execute();
+        if (viewCommands.containsKey(key)) {
+            activeKey = key;
+            viewCommands.get(key).execute();
         } else if (key == 'c') {
             coldPaint = true;
         } else if (key == 'h') {
