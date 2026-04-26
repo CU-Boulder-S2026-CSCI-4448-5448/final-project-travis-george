@@ -72,3 +72,6 @@ Child classes:
 - `TempField`
 - `MoistureField`
 - `RainParticleSystem`
+
+## Test Coverage Screenshot
+![Full_Method_Coverage.png](images/method-coverage.png)
