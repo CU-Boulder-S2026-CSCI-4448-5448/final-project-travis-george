@@ -32,9 +32,11 @@ public class TempFieldTest {
     @Test
     void testDiffuse() {
         TempField tempField = new TempField(3, 3);
+        float neighborBefore = tempField.getCell(0, 1);
+        tempField.setCell(1, 1, 1.0f); // hot center
         tempField.tick();
-        float value = tempField.getCell(1, 1);
-        assertTrue(value >= 0f);
-        assertTrue(value <= 1f);
+        // center got cooler, sides got warmer
+        assertTrue(tempField.getCell(1, 1) < 1.0f);
+        assertTrue(tempField.getCell(0, 1) > neighborBefore);
     }
 }
