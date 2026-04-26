@@ -15,13 +15,11 @@ public class MoistureViewStrategy implements IViewStrategy {
     private static final int WET_B = 255;
 
     @Override
-    public void render(PGraphics g, Simulation sim) {
+    public void render(PGraphics g, Simulation sim, float cellSize) {
         // Draw grid
         // source: https://processing.org/examples/gameoflife.html
         int rows = sim.getMoistureField().getNumRows();
         int cols = sim.getMoistureField().getNumCols();
-        float cellWidth = sim.getSkyboxWidth() / cols;
-        float cellHeight = sim.getSkyboxHeight() / rows;
 
         g.stroke(200);
         g.strokeWeight(0.1f);
@@ -33,7 +31,7 @@ public class MoistureViewStrategy implements IViewStrategy {
                 float value = sim.getMoistureField().getCell(row, col);
                 int cellColor = g.lerpColor(dry, wet, value);
                 g.fill(cellColor);
-                g.rect(col * cellWidth, row * cellHeight, cellWidth, cellHeight);
+                g.rect(col * cellSize, row * cellSize, cellSize, cellSize);
             }
         }
     }

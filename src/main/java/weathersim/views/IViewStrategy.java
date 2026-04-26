@@ -4,9 +4,9 @@ import processing.core.PGraphics;
 import weathersim.Simulation;
 
 public interface IViewStrategy {
-    void render(PGraphics g, Simulation sim);
+    void render(PGraphics g, Simulation sim, float cellSize);
 
-    default void onMouseDrag(PGraphics g, Simulation sim, int x, int y, boolean coldPaint) {
+    default void onMouseDrag(PGraphics g, Simulation sim, float cellSize, int x, int y, boolean coldPaint) {
         return;
     }
 }

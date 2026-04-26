@@ -28,9 +28,9 @@ public class ResultViewStrategy implements IViewStrategy {
     private static final float CLOUD_MIDPOINT = 0.25f;
 
     @Override
-    public void render(PGraphics g, Simulation sim) {
+    public void render(PGraphics g, Simulation sim, float cellSize) {
         drawSky(g, sim);
-        drawClouds(g, sim);
+        drawClouds(g, sim, cellSize);
         drawRain(g, sim);
     }
 
@@ -38,11 +38,9 @@ public class ResultViewStrategy implements IViewStrategy {
         g.background(SKY_R, SKY_G, SKY_B);
     }
 
-    private void drawClouds(PGraphics g, Simulation sim) {
+    private void drawClouds(PGraphics g, Simulation sim, float cellSize) {
         int rows = sim.getMoistureField().getNumRows();
         int cols = sim.getMoistureField().getNumCols();
-        float cellWidth = sim.getSkyboxWidth() / cols;
-        float cellHeight = sim.getSkyboxHeight() / rows;
 
         g.noStroke();
         g.rectMode(PConstants.CORNER);
@@ -53,8 +51,8 @@ public class ResultViewStrategy implements IViewStrategy {
             for (int col = 0; col < cols; col++) {
                 float moisture = sim.getMoistureField().getCell(row, col);
                 if (moisture >= CLOUD_THRESHOLD) {
-                    float x = col * cellWidth;
-                    float y = row * cellHeight;
+                    float x = col * cellSize;
+                    float y = row * cellSize;
                     float intensity = invLerp(CLOUD_THRESHOLD, 1, moisture);
                     int cloudColor;
                     if (intensity < CLOUD_MIDPOINT) {
@@ -65,13 +63,13 @@ public class ResultViewStrategy implements IViewStrategy {
                         cloudColor = g.lerpColor(white, storm, invLerp(CLOUD_MIDPOINT, 1, intensity));
                     }
                     g.fill(cloudColor);
-                    g.rect(x, y, cellWidth, cellHeight);
+                    g.rect(x, y, cellSize, cellSize);
                 }
             }
         }
     }
 
-    public void drawRain(PGraphics g, Simulation sim) {
+    private void drawRain(PGraphics g, Simulation sim) {
         // draw rain from rain list
         ArrayList<RainParticle> particles = sim.getRainParticleSystem().getParticles();
         for (int i = particles.size() - 1; i >= 0; i--) {
