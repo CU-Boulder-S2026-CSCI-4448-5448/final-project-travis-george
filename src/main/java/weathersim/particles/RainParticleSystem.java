@@ -8,7 +8,7 @@ import java.util.Random;
 // Source: https://processing.org/examples/simpleparticlesystem.html
 public class RainParticleSystem {
     public static final float CLOUD_MOISTURE_DRAIN_RATE = 0.0025f;
-    public static final float RAIN_THRESHOLD = 0.55f;
+    public static final float RAIN_THRESHOLD = 0.53f;
     private static final Random RANDOM = new Random();
 
     private final MoistureField moistureField;
