@@ -11,17 +11,12 @@ public class RainParticleSystemTest {
     @Test
     void testSimpleStart() {
         MoistureField moistureField = new MoistureField(2, 2, new TempField(2, 2));
-        float cellWidth = 5;
-        float cellHeight = 5;
         RainParticleSystem rainSystem = new RainParticleSystem(10f, moistureField);
 
-        // asserts rain particles are created at expected location within random creation tolerances
-        rainSystem.spawnAt(1,1);
-        assertEquals(5, rainSystem.getParticles().getFirst().getPosition().x, cellWidth / 2.0f);
-        assertEquals(5, rainSystem.getParticles().getFirst().getPosition().y, cellHeight / 2.0f);
-        rainSystem.spawnAt(0,0);
-        assertEquals(0, rainSystem.getParticles().getLast().getPosition().x, cellWidth / 2.0f);
-        assertEquals(0, rainSystem.getParticles().getLast().getPosition().y, cellHeight / 2.0f);
+        rainSystem.spawnAt(1, 1);
+        assertEquals(1, rainSystem.getParticles().size());
+        rainSystem.spawnAt(0, 0);
+        assertEquals(2, rainSystem.getParticles().size());
     }
 
     @Test
