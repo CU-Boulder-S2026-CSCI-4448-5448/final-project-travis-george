@@ -27,7 +27,7 @@ public class RainParticleTest {
     @Test
     void testRainParticleDies() {
         RainParticle particle = new RainParticle(0, 0);
-        for (float i = LIFESPAN; i > 0; i-=LIFESPAN_LOSS_RATE) {
+        for (float i = LIFESPAN; i > 0; i -= LIFESPAN_LOSS_RATE) {
             particle.update();
         }
         assertTrue(particle.isDead());
