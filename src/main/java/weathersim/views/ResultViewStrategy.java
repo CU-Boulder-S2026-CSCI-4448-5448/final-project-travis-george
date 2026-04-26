@@ -30,8 +30,8 @@ public class ResultViewStrategy implements IViewStrategy {
     private static final int RAIN_R = 0;
     private static final int RAIN_G = 0;
     private static final int RAIN_B = 205;
-    private static final float RAIN_WIDTH = 3;
-    private static final float RAIN_HEIGHT = 8;
+    private static final float RAIN_WIDTH = 2.5f;
+    private static final float RAIN_HEIGHT = 10;
 
     @Override
     public void render(PGraphics g, Simulation sim, float cellSize) {
