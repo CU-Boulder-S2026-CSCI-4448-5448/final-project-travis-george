@@ -56,7 +56,7 @@ public class RainParticleSystem {
         }
     }
 
-    private void spawnAt(int row, int col) {
+    public void spawnAt(int row, int col) {
         // spawn rain
         float x = col * cellSize + RANDOM.nextFloat(-cellSize / 2f, cellSize / 2f);
         float y = row * cellSize + RANDOM.nextFloat(-cellSize / 2f, cellSize / 2f);

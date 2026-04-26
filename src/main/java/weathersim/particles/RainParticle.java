@@ -7,8 +7,8 @@ import java.util.Random;
 public class RainParticle {
     private static final float GRAVITY = 0.4f;
     private static final float VELOCITY_DIFF = 0.5f;
-    private static final float LIFESPAN = 255.0f;
-    private static final float LIFESPAN_LOSS_RATE = 4f;
+    public static final float LIFESPAN = 255.0f;
+    public static final float LIFESPAN_LOSS_RATE = 4f;
 
     private final PVector position;
     private final PVector velocity;

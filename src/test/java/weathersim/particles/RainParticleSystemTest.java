@@ -11,12 +11,11 @@ public class RainParticleSystemTest {
     void testSimpleStart() {
         MoistureField moistureField = new MoistureField(2, 2, new TempField(2, 2));
         moistureField.setCell(1, 1, 0.8f);
-        RainParticleSystem rainSystem = new RainParticleSystem(100, 100, moistureField);
-        rainSystem.spawnAt(1,1, 5, 5);
-        rainSystem.spawnAt(0,0, 5, 5);
+        RainParticleSystem rainSystem = new RainParticleSystem(10f, moistureField);
+        rainSystem.spawnAt(1, 1);
+        rainSystem.spawnAt(0, 0);
         assertEquals(1, rainSystem.getParticles().getFirst().getPosition().x);
         assertEquals(1, rainSystem.getParticles().getFirst().getPosition().y);
-
 
         assertEquals(1, rainSystem.getParticles().getLast().getPosition().x);
         assertEquals(1, rainSystem.getParticles().getLast().getPosition().y);
