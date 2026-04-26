@@ -5,7 +5,7 @@ import weathersim.fields.MoistureField;
 import weathersim.fields.TempField;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static weathersim.views.ResultViewStrategy.CLOUD_THRESHOLD;
+import static weathersim.particles.RainParticleSystem.RAIN_THRESHOLD;
 
 public class RainParticleSystemTest {
     @Test
@@ -25,17 +25,17 @@ public class RainParticleSystemTest {
     }
 
     @Test
-    void testTick() {
+    void testRainReducesMoisture() {
         MoistureField moistureField = new MoistureField(2, 2, new TempField(2, 2));
-        moistureField.setCell(1, 1, CLOUD_THRESHOLD*2); // above cloud threshold
-        moistureField.setCell(0, 0, CLOUD_THRESHOLD*2);
-        moistureField.setCell(1, 0, CLOUD_THRESHOLD*2);
+        moistureField.setCell(1, 1, RAIN_THRESHOLD); // above cloud threshold
+        moistureField.setCell(0, 0, RAIN_THRESHOLD);
+        moistureField.setCell(1, 0, RAIN_THRESHOLD);
 
-        float cellWidth = 5;
-        float cellHeight = 5;
         RainParticleSystem rainSystem = new RainParticleSystem(100, 100, moistureField);
         rainSystem.tick(); // particles created here b/c above cloud threshold
         assertEquals(3, rainSystem.getParticles().size());
-        assertEquals(CLOUD_THRESHOLD*2 - RainParticleSystem.CLOUD_MOISTURE_DRAIN_RATE, moistureField.getCell(1, 1), 0.0001f);
+        assertEquals(RAIN_THRESHOLD - RainParticleSystem.CLOUD_MOISTURE_DRAIN_RATE, moistureField.getCell(1, 1));
+        assertEquals(RAIN_THRESHOLD - RainParticleSystem.CLOUD_MOISTURE_DRAIN_RATE, moistureField.getCell(0, 0));
+        assertEquals(RAIN_THRESHOLD - RainParticleSystem.CLOUD_MOISTURE_DRAIN_RATE, moistureField.getCell(1, 0));
     }
 }
