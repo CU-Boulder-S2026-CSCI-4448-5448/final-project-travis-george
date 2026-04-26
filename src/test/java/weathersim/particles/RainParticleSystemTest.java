@@ -27,7 +27,7 @@ public class RainParticleSystemTest {
     @Test
     void testRainReducesMoisture() {
         MoistureField moistureField = new MoistureField(2, 2, new TempField(2, 2));
-        moistureField.setCell(1, 1, RAIN_THRESHOLD); // above cloud threshold
+        moistureField.setCell(1, 1, RAIN_THRESHOLD); // above rain threshold
         moistureField.setCell(0, 0, RAIN_THRESHOLD);
         moistureField.setCell(1, 0, RAIN_THRESHOLD);
 
