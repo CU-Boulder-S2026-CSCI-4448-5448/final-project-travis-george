@@ -1,26 +1,24 @@
 package weathersim.fields;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MoistureFieldTest extends SimulationField {
-    private final TempField tempField;
-
-    public MoistureFieldTest(int rows, int cols, TempField tempField) {
-        super(rows, cols);
-        this.tempField = tempField;
-    }
-
-    @Disabled
+public class MoistureFieldTest {
+    @Test
     void testConstructor() {
-        MoistureFieldTest moistureField = new MoistureFieldTest(2, 3, tempField);
+        MoistureField moistureField = new MoistureField(2, 3, new TempField(2, 3));
         assertEquals(2, moistureField.getNumRows());
         assertEquals(3, moistureField.getNumCols());
     }
 
-    protected void diffuse() {
+    @Test
+    void testDiffuse() {
+        MoistureField moistureField = new MoistureField(3, 3, new TempField(3, 3));
+        moistureField.tick();
+        float value = moistureField.getCell(1, 1);
+        assertTrue(value >= 0f);
+        assertTrue(value <= 1f);
     }
 }
-
