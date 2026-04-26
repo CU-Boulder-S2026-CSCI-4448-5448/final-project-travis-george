@@ -26,6 +26,12 @@ public class ResultViewStrategy implements IViewStrategy {
     private static final int STORM_A = 255;
     // Transition point from white to storm clouds
     private static final float CLOUD_MIDPOINT = 0.25f;
+    // Rain
+    private static final int RAIN_R = 0;
+    private static final int RAIN_G = 0;
+    private static final int RAIN_B = 205;
+    private static final float RAIN_WIDTH = 3;
+    private static final float RAIN_HEIGHT = 8;
 
     @Override
     public void render(PGraphics g, Simulation sim, float cellSize) {
@@ -72,11 +78,11 @@ public class ResultViewStrategy implements IViewStrategy {
     private void drawRain(PGraphics g, Simulation sim) {
         // draw rain from rain list
         ArrayList<RainParticle> particles = sim.getRainParticleSystem().getParticles();
-        for (int i = particles.size() - 1; i >= 0; i--) {
-            RainParticle p = particles.get(i);
-            g.stroke(0, 0, 205, p.getLifespan());
-            g.fill(0, 0, 205, p.getLifespan());
-            g.ellipse(p.getPosition().x, p.getPosition().y, 3, 8);
+        for (RainParticle p : particles) {
+            float alpha = p.getLifespan();
+            g.stroke(RAIN_R, RAIN_G, RAIN_B, alpha);
+            g.fill(RAIN_R, RAIN_G, RAIN_B, alpha);
+            g.ellipse(p.getPosition().x, p.getPosition().y, RAIN_WIDTH, RAIN_HEIGHT);
         }
     }
 
