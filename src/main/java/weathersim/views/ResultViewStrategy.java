@@ -77,6 +77,7 @@ public class ResultViewStrategy implements IViewStrategy {
 
     private void drawRain(PGraphics g, Simulation sim) {
         // draw rain from rain list
+        g.strokeWeight(1);
         ArrayList<RainParticle> particles = sim.getRainParticleSystem().getParticles();
         for (RainParticle p : particles) {
             float alpha = p.getLifespan();
