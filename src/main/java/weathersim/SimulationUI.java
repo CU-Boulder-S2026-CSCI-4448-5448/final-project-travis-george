@@ -157,4 +157,8 @@ public class SimulationUI extends PApplet {
     public void setViewStrategy(IViewStrategy viewStrategy) {
         this.viewStrategy = viewStrategy;
     }
+
+    public IViewStrategy getViewStrategy() {
+        return viewStrategy;
+    }
 }

@@ -5,6 +5,9 @@ import java.util.Random;
 
 // Source: https://processing.org/examples/simpleparticlesystem.html
 public class RainParticle {
+    static final float LIFESPAN = 255.0f;
+    static final float LIFESPAN_LOSS_RATE = 4f;
+
     PVector position;
     PVector velocity;
     PVector acceleration;
@@ -22,13 +25,13 @@ public class RainParticle {
                 y + random.nextFloat(-cellSize / 2.0f, cellSize / 2.0f)
         ); // random spawn within cell for visual smoothness only
 
-        lifespan = 255.0f;
+        lifespan = LIFESPAN;
     }
 
     void update() {
         velocity.add(acceleration);
         position.add(velocity);
-        lifespan -= 4;
+        lifespan -= LIFESPAN_LOSS_RATE;
     }
 
     boolean isDead() {

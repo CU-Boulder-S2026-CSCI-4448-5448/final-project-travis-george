@@ -2,8 +2,9 @@ package weathersim.fields;
 
 public class TempField extends SimulationField {
     // Brush
-    private static final float HOT_PAINT_VALUE = 0.7f;
-    private static final float COLD_PAINT_VALUE = 0.0f;
+    // no longer private b/c values needed only for TempFieldTest? Is ok?
+    static final float HOT_PAINT_VALUE = 0.7f;
+    static final float COLD_PAINT_VALUE = 0.0f;
     private static final int BRUSH_SIZE = 2;
     // Diffusion
     private static final float DIFFUSION_RATE = 0.25f;
