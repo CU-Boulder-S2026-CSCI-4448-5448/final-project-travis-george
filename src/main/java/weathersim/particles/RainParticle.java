@@ -5,26 +5,23 @@ import java.util.Random;
 
 // Source: https://processing.org/examples/simpleparticlesystem.html
 public class RainParticle {
-    static final float LIFESPAN = 255.0f;
-    static final float LIFESPAN_LOSS_RATE = 4f;
+    private static final float GRAVITY = 0.4f;
+    private static final float VELOCITY_DIFF = 0.5f;
+    public static final float LIFESPAN = 255.0f;
+    public static final float LIFESPAN_LOSS_RATE = 4f;
 
-    PVector position;
-    PVector velocity;
-    PVector acceleration;
-    float lifespan;
+    private final PVector position;
+    private final PVector velocity;
+    private final PVector acceleration;
+    private float lifespan;
 
-    Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     // change randomness to cellsize
-    RainParticle(float x, float y, float cellSize) {
-        acceleration = new PVector(0f, 0.4f);
-        velocity = new PVector((float) random.nextFloat(-0.5f, 0.5f), 0); // more visually smooth
-
-        position = new PVector(
-                x + random.nextFloat(-cellSize / 2.0f, cellSize / 2.0f),
-                y + random.nextFloat(-cellSize / 2.0f, cellSize / 2.0f)
-        ); // random spawn within cell for visual smoothness only
-
+    RainParticle(float x, float y) {
+        position = new PVector(x, y);
+        velocity = new PVector(RANDOM.nextFloat(-VELOCITY_DIFF, VELOCITY_DIFF), 0);
+        acceleration = new PVector(0f, GRAVITY);
         lifespan = LIFESPAN;
     }
 

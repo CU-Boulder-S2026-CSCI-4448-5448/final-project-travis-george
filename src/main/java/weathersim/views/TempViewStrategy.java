@@ -15,13 +15,11 @@ public class TempViewStrategy implements IViewStrategy {
     private static final int HOT_B = 0;
 
     @Override
-    public void render(PGraphics g, Simulation sim) {
+    public void render(PGraphics g, Simulation sim, float cellSize) {
         // Draw grid
         // source: https://processing.org/examples/gameoflife.html
         int rows = sim.getTempField().getNumRows();
         int cols = sim.getTempField().getNumCols();
-        float cellWidth = sim.getSkyboxWidth() / cols;
-        float cellHeight = sim.getSkyboxHeight() / rows;
 
         g.stroke(200);
         g.strokeWeight(0.1f);
@@ -33,17 +31,15 @@ public class TempViewStrategy implements IViewStrategy {
                 float value = sim.getTempField().getCell(row, col);
                 int cellColor = g.lerpColor(cold, hot, value);
                 g.fill(cellColor);
-                g.rect(col * cellWidth, row * cellHeight, cellWidth, cellHeight);
+                g.rect(col * cellSize, row * cellSize, cellSize, cellSize);
             }
         }
     }
 
     @Override
-    public void onMouseDrag(PGraphics g, Simulation sim, int x, int y, boolean coldPaint) {
-        float cellWidth = sim.getSkyboxWidth() / sim.getTempField().getNumCols();
-        float cellHeight = sim.getSkyboxHeight() / sim.getTempField().getNumRows();
-        int col = (int) (x / cellWidth);
-        int row = (int) (y / cellHeight);
+    public void onMouseDrag(PGraphics g, Simulation sim, float cellSize, int x, int y, boolean coldPaint) {
+        int col = (int) (x / cellSize);
+        int row = (int) (y / cellSize);
         if (coldPaint) {
             sim.getTempField().paintCold(row, col);
         } else {

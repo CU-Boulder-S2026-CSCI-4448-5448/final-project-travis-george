@@ -17,7 +17,7 @@ public class SimulationUI extends PApplet {
     private Simulation sim;
 
     // Layout
-    private final int CELL_SIZE = 10;
+    private final float CELL_SIZE = 10f;
     private final int PANEL_HEIGHT = 90;
     private final int PANEL_COLOR = color(200, 200, 255);
     private final int BLACK = color(0);
@@ -62,11 +62,9 @@ public class SimulationUI extends PApplet {
         textSize(TEXT_SIZE);
         textAlign(CENTER, CENTER);
 
-        int rows = (height - PANEL_HEIGHT) / CELL_SIZE;
-        int cols = width / CELL_SIZE;
-        float skyboxWidth = width;
-        float skyboxHeight = height - PANEL_HEIGHT;
-        sim = new Simulation(rows, cols, skyboxWidth, skyboxHeight);
+        int rows = (int) Math.ceil((height - PANEL_HEIGHT) / CELL_SIZE);
+        int cols = (int) Math.ceil(width / CELL_SIZE);
+        sim = new Simulation(rows, cols, CELL_SIZE);
 
         viewCommands.put('r', commandFactory.newResultViewCommand(this));
         viewCommands.put('t', commandFactory.newTempViewCommand(this));
@@ -83,7 +81,7 @@ public class SimulationUI extends PApplet {
         sim.update();
 
         // Render current view
-        viewStrategy.render(g, sim);
+        viewStrategy.render(g, sim, CELL_SIZE);
 
         // Render info panel
         drawInfoPanel();
@@ -151,7 +149,7 @@ public class SimulationUI extends PApplet {
 
     public void mouseDragged() {
         // Processing - Runs when mouse dragged
-        viewStrategy.onMouseDrag(g, sim, mouseX, mouseY, coldPaint);
+        viewStrategy.onMouseDrag(g, sim, CELL_SIZE, mouseX, mouseY, coldPaint);
     }
 
     public void setViewStrategy(IViewStrategy viewStrategy) {

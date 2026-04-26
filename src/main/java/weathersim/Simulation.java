@@ -7,16 +7,12 @@ import weathersim.particles.RainParticleSystem;
 public class Simulation {
     private final TempField tempField;
     private final MoistureField moistureField;
-    private final float skyboxWidth;
-    private final float skyboxHeight;
     private final RainParticleSystem rainParticleSystem;
 
-    public Simulation(int rows, int cols, float skyboxWidth, float skyboxHeight) {
+    public Simulation(int rows, int cols, float cellSize) {
         this.tempField = new TempField(rows, cols);
         this.moistureField = new MoistureField(rows, cols, tempField);
-        this.rainParticleSystem = new RainParticleSystem(skyboxWidth, skyboxHeight, moistureField);
-        this.skyboxWidth = skyboxWidth;
-        this.skyboxHeight = skyboxHeight;
+        this.rainParticleSystem = new RainParticleSystem(cellSize, moistureField);
     }
 
     public void update() {
@@ -35,13 +31,5 @@ public class Simulation {
 
     public RainParticleSystem getRainParticleSystem() {
         return this.rainParticleSystem;
-    }
-
-    public float getSkyboxWidth() {
-        return this.skyboxWidth;
-    }
-
-    public float getSkyboxHeight() {
-        return this.skyboxHeight;
     }
 }
